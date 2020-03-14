@@ -2,47 +2,67 @@ package com.stefanini.servico;
 
 import com.stefanini.dao.EnderecoDao;
 import com.stefanini.model.Endereco;
-import com.stefanini.util.IGenericService;
 
+import javax.ejb.*;
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * 
  * Classe de servico, as regras de negocio devem estar nessa classe
- * @author joaopedromilhome
  *
+ * @author joaopedromilhome
  */
-public class EnderecoServico implements IGenericService<Endereco, Long> {
-	
-	@Inject
-	private EnderecoDao dao;
+@Stateless
+@TransactionManagement(TransactionManagementType.CONTAINER)
+@TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+public class EnderecoServico implements Serializable {
 
+    /**
+     * Serializacao da Classe
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public Endereco salvar(@Valid Endereco entity) {
-		return dao.salvar(entity);
-	}
+    @Inject
+    private EnderecoDao dao;
 
-	@Override
-	public Endereco atualizar(@Valid Endereco entity) {
-		return dao.atualizar(entity);
-	}
+    /**
+     * Salvar os dados de um Endereco
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Endereco salvar(@Valid Endereco entity) {
+        return dao.salvar(entity);
+    }
 
-	@Override
-	public void remover(Long id) {
-	dao.remover(id);
-	}
+    /**
+     * Atualizar o dados de uma Endereco
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public Endereco atualizar(@Valid Endereco entity) {
+        return dao.atualizar(entity);
+    }
 
-	@Override
-	public Optional<List<Endereco>> getList() {
-		return Optional.empty();
-	}
+    /**
+     * Remover uma Endereco pelo ID
+     */
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+    public void remover(Long id) {
+        dao.remover(id);
+    }
 
-	@Override
-	public Optional<Endereco> encontrar(Long id) {
-		return dao.encontrar(id);
-	}
+    /**
+     * Buscar uma lista de Enderecos
+     */
+    public Optional<List<Endereco>> getList() {
+        return dao.getList();
+    }
+
+    /**
+     * Buscar um Endereco pelo ID
+     */
+    public Optional<Endereco> encontrar(Long id) {
+        return dao.encontrar(id);
+    }
 }

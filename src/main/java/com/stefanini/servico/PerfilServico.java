@@ -1,7 +1,8 @@
 package com.stefanini.servico;
 
-import com.stefanini.dao.PessoaDao;
-import com.stefanini.model.Pessoa;
+import com.stefanini.dao.PerfilDao;
+import com.stefanini.model.Perfil;
+import com.stefanini.util.IGenericService;
 
 import javax.ejb.*;
 import javax.inject.Inject;
@@ -13,12 +14,12 @@ import java.util.Optional;
 /**
  * Classe de servico, as regras de negocio devem estar nessa classe
  *
- * @author joaopedromilhome
+ * @author dernivalliandro
  */
 @Stateless
 @TransactionManagement(TransactionManagementType.CONTAINER)
 @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
-public class PessoaServico implements Serializable {
+public class PerfilServico implements Serializable {
 
     /**
      * Serializacao da Classe
@@ -26,43 +27,43 @@ public class PessoaServico implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Inject
-    private PessoaDao dao;
+    public PerfilDao perfilDao;
 
     /**
-     * Salvar os dados de uma Pessoa
+     * Salvar os dados de um Perfil
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Pessoa salvar(@Valid Pessoa pessoa) {
-        return dao.salvar(pessoa);
+    public Perfil salvar(@Valid Perfil perfil) {
+        return perfilDao.salvar(perfil);
     }
 
     /**
-     * Atualizar o dados de uma pessoa
+     * Atualizar o dados de uma Perfil
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public Pessoa atualizar(@Valid Pessoa entity) {
-        return dao.atualizar(entity);
+    public Perfil atualizar(@Valid Perfil perfil) {
+        return perfilDao.atualizar(perfil);
     }
 
     /**
-     * Remover uma pessoa pelo ID
+     * Remover uma Perfil pelo ID
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
-    public void remover(@Valid Long id) {
-        dao.remover(id);
+    public void remover(Long id) {
+        perfilDao.remover(id);
     }
 
     /**
-     * Buscar uma lista de Pessoa
+     * Buscar uma lista de Perfis
      */
-    public Optional<List<Pessoa>> getList() {
-        return dao.getList();
+    public Optional<List<Perfil>> getList() {
+        return perfilDao.getList();
     }
 
     /**
-     * Buscar uma Pessoa pelo ID
+     * Buscar um Perfil pelo ID
      */
-    public Optional<Pessoa> encontrar(Long id) {
-        return dao.encontrar(id);
+    public Optional<Perfil> encontrar(Long id) {
+        return perfilDao.encontrar(id);
     }
 }
